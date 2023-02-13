@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
+import { QuickView } from '../quick-view';
 
-export class Product extends Component {
-    constructor(){
+
+
+export class ProductContainer extends Component {
+    constructor() {
         super();
-        // this.src = require('../../assets/images/product_img1-2.jpg');
+        this.state = {
+            components: false
+        };
         this.src = process.env.REACT_APP_SERVER_URL+"storage/uploads/products/";
-     }
+        this.handleClick = this.handleClick.bind(this);
+      }
+
+    handleClick = (a) => {
+        this.setState({ components: true });
+        console.log(this.state.components);
+        // { this.state.components.map((item, i) => ( <QuickView /> ))} 
+    };
 
     render() {
         return(
@@ -18,7 +30,7 @@ export class Product extends Component {
                         <ul className="list_none pr_action_btn">
                             <li><a href="#"><i className="icon-basket-loaded"></i></a></li>
                             <li><a href="shop-compare.html" className="popup-ajax"><i className="icon-shuffle"></i></a></li>
-                            <li><a href="shop-quick-view.html" className="popup-ajax"><i className="icon-magnifier-add"></i></a></li>
+                            <li><a href="#" className="popup-ajax" onClick={() => this.handleClick(this.props.data)}><i className="icon-magnifier-add"></i></a></li>
                             <li><a href="#"><i className="icon-heart"></i></a></li>
                         </ul>
                     </div>
@@ -54,4 +66,4 @@ export class Product extends Component {
       }
 };
 
-export default Product;
+export default ProductContainer;
