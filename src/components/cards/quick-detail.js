@@ -7,6 +7,7 @@ export const QuickDetail = ({detail}) => {
 
     const [show, setShow] = useState(false);
     const [pic, setPic] = useState(null);
+    const [image, setImage] = useState(null);
     
     const handleSelect = (variant) => { 
         setShow(true);
@@ -53,12 +54,12 @@ export const QuickDetail = ({detail}) => {
           { detail.map((item, index) => { 
                 return (
                     <SwiperSlide key={index}>
-                    <div className="item">
-                    <a href="#" className="product_gallery_item" data-image="assets/images/product_img1-4.jpg" data-zoom-image="assets/images/product_zoom_img4.jpg">
-                        <img src={srcVariant + item.img_file} alt={"image " + index} />
-                    </a>
-                </div>
-                </SwiperSlide>
+                        <div className="item">
+                        <a href="#" onClick={() => setImage(srcVariant + item.img_file)} className="product_gallery_item" data-image="assets/images/product_img1-4.jpg" data-zoom-image="assets/images/product_zoom_img4.jpg">
+                            <img src={srcVariant + item.img_file} alt={"image " + index} />
+                        </a>
+                    </div>
+                    </SwiperSlide>
                 )
             })}
           </Swiper>
@@ -73,7 +74,7 @@ export const QuickDetail = ({detail}) => {
                 <div className="col-lg-6 col-md-6 mb-4 mb-md-0">
                     <div className="product-image">
                         <div className="product_img_box">
-                            <img id="product_img" src={srcProduct+detail.image_product} data-zoom-image="assets/images/product_zoom_img1.jpg" alt="product_img1" />
+                        { image ? ( <img id="product_img" src={image} data-zoom-image="assets/images/product_zoom_img1.jpg" alt="product_img1" /> ) : ( <img id="product_img" src={srcProduct+detail.image_product} data-zoom-image="assets/images/product_zoom_img1.jpg" alt="product_img1" /> ) }
                         </div>
                         <div id="pr_item_gallery" className="product_gallery_item" data-slides-to-show="4" data-slides-to-scroll="1" data-infinite="false">
                             { show && pic }
