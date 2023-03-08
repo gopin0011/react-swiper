@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -7,6 +7,7 @@ import "swiper/css/pagination";
 import 'swiper/css/navigation';
 
 import "./styles.css";
+import "./components/cards/swiper.css";
 
 // import required modules
 import { Pagination, Navigation } from "swiper";
@@ -19,12 +20,14 @@ export default function App() {
   const [shown, setShown] = useState(false);
   const [detail, setDetail] = useState({});
   const [product, setProduct] = useState(null);
+  const [currentSlide ,setCurrentSlide] = useState(0);
   const srcProduct = process.env.REACT_APP_SERVER_URL+"storage/uploads/products/";
 
-  function QuickView(props) {
-    let modalRef = null;
-    let closeButton = null;
+  let myInp = null;
+  let modalRef = null;
+  let closeButton = null;
 
+  function QuickView(props) {
     return (
       <React.Fragment>
         {props.isShown ? (
@@ -39,13 +42,13 @@ export default function App() {
         ) : null}
       </React.Fragment>
     );
-  }
+  };
 
   function ProductCard({data}) {
     return (
       <React.Fragment>
         <Swiper
-            slidesPerView={4}
+            // slidesPerView={4}
             spaceBetween={30}
             centeredSlides={false}
             // pagination={{
@@ -54,7 +57,25 @@ export default function App() {
             // modules={[Pagination]}
             navigation
             modules={[Navigation]}
-            className="mySwiper"
+            className="swiper"
+            breakpoints={{
+              // when window width is >= 640px
+              640: {
+                width: 640,
+                slidesPerView: 1,
+              },
+              // when window width is >= 768px
+              768: {
+                width: 768,
+                slidesPerView: 2,
+              },
+              1024: {
+                width: 1024,
+                slidesPerView: 4,
+              }
+            }}
+            // onSwiper={(swiper) => setSwiper(swiper)}
+            onSlideChange={(swiper) => {  }}
           >
           { product && product.map((data,id)=>{
             return (
@@ -68,7 +89,7 @@ export default function App() {
                           <ul className="list_none pr_action_btn">
                               <li><a href="#"><i className="icon-basket-loaded"></i></a></li>
                               <li><a href="shop-compare.html" className="popup-ajax"><i className="icon-shuffle"></i></a></li>
-                              <li><a href="#" className="popup-ajax" onClick={() => showModal(data)}><i className="icon-magnifier-add"></i></a></li>
+                              <li><a className="popup-ajax" href="#!" onClick={() => { showModal(data); myInp.focus(); }} ref={(ip) => myInp = ip}><i className="icon-magnifier-add"></i></a></li>
                               <li><a href="#"><i className="icon-heart"></i></a></li>
                           </ul>
                       </div>
@@ -107,8 +128,7 @@ export default function App() {
         <QuickView isShown={shown} />
     </React.Fragment>
     );
-  }
-
+  };
 
   const getAllData = () => {
     ProductService.all().then((response) => {
@@ -131,7 +151,7 @@ export default function App() {
 
   function closeModal() {
     setShown(false);
-  }
+  };
 
   function onKeyDown(event) {
     if (event.keyCode === 27) {
@@ -140,15 +160,13 @@ export default function App() {
   };
 
   function onClickOutside(event) {
-    console.log(this);
-    // if (this.modal && this.modal.contains(event.target)) return;
-    // closeModal();
+    if (modalRef && modalRef.contains(event.target)) return;
+    closeModal();
   };
 
   const toggleScrollLock = () => {
     document.querySelector('html').classList.toggle('scroll-lock');
   };
-
 
   return (
     <>
@@ -157,6 +175,5 @@ export default function App() {
       </div>
     </>
   );
-
 
 }
