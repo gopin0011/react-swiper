@@ -20,52 +20,54 @@ export const QuickDetail = ({detail}) => {
         const srcVariant = process.env.REACT_APP_SERVER_URL+"storage/uploads/variant/";
         
         return (
-        <React.Fragment>
-            <Swiper
-            slidesPerView={4}
-            spaceBetween={30}
-            centeredSlides={false}
-            // pagination={{
-            //   clickable: true,
-            // }}
-            // modules={[Pagination]}
-            navigation
-            modules={[Pagination,Navigation]}
-            className="swiper"
-            // breakpoints={{
-            //   // when window width is >= 640px
-            //   640: {
-            //     width: 640,
-            //     slidesPerView: 1,
-            //   },
-            //   // when window width is >= 768px
-            //   768: {
-            //     width: 768,
-            //     slidesPerView: 2,
-            //   },
-            //   1024: {
-            //     width: 1024,
-            //     slidesPerView: 4,
-            //   }
-            // }}
-            // onSwiper={(swiper) => setSwiper(swiper)}
-            onSlideChange={(swiper) => {  }}
-          >
-          { detail.map((item, index) => { 
-                return (
-                    <SwiperSlide key={index}>
-                        <div className="item">
-                        <a href="#" onClick={() => setImage(srcVariant + item.img_file)} className="product_gallery_item" data-image="assets/images/product_img1-4.jpg" data-zoom-image="assets/images/product_zoom_img4.jpg">
-                            <img src={srcVariant + item.img_file} alt={"image " + index} />
-                        </a>
-                    </div>
-                    </SwiperSlide>
-                )
-            })}
-          </Swiper>
-        </React.Fragment>
+            <React.Fragment>
+                <Swiper
+                slidesPerView={4}
+                spaceBetween={10}
+                centeredSlides={false}
+                pagination={{
+                clickable: true,
+                }}
+                modules={[Pagination]}
+                navigation
+                modules={[Navigation]}
+                className="swiper"
+                // breakpoints={{
+                //   // when window width is >= 640px
+                //   640: {
+                //     width: 640,
+                //     slidesPerView: 1,
+                //   },
+                //   // when window width is >= 768px
+                //   768: {
+                //     width: 768,
+                //     slidesPerView: 2,
+                //   },
+                //   1024: {
+                //     width: 1024,
+                //     slidesPerView: 4,
+                //   }
+                // }}
+                // onSwiper={(swiper) => setSwiper(swiper)}
+                onSlideChange={(swiper) => {  }}
+            >
+            { detail.map((item, index) => { 
+                if(index == 0) {
+                    setImage(srcVariant + item.img_file);
+                }
+                    return (
+                        <SwiperSlide key={index}>
+                            <div className="item">
+                            <a href="#" onClick={() => setImage(srcVariant + item.img_file)} className="product_gallery_item" data-image="assets/images/product_img1-4.jpg" data-zoom-image="assets/images/product_zoom_img4.jpg">
+                                <img src={srcVariant + item.img_file} alt={"image " + index} />
+                            </a>
+                        </div>
+                        </SwiperSlide>
+                    )
+                })}
+            </Swiper>
+            </React.Fragment>
         );
-        // return items;
     } 
 
     return (
